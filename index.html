@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Surprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --primary: #ff3e6c; --dark: #111; }
+        body, html { margin: 0; padding: 0; background: var(--dark); color: white; font-family: 'Poppins', sans-serif; overflow: hidden; height: 100vh; }
+        
+        .screen { position: absolute; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; display: none; text-align: center; padding: 20px; box-sizing: border-box; }
+        .active { display: flex; animation: fadeIn 0.8s ease; }
+
+        /* Loader Screen */
+        #loader-text { font-size: 5rem; font-weight: bold; color: var(--primary); }
+
+        /* Intro Screen */
+        .btn { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 50px; cursor: pointer; font-size: 1.2rem; box-shadow: 0 0 20px var(--primary); }
+        
+        /* Cake Screen */
+        .cake { position: relative; width: 150px; height: 100px; background: #f191b1; border-radius: 10px 10px 0 0; margin: 50px 0; }
+        .cake::after { content: ""; position: absolute; top: 30px; left: 0; width: 100%; height: 20px; background: #e84393; }
+        .candle { width: 10px; height: 35px; background: #eee; position: absolute; top: -35px; left: 70px; }
+        .flame { width: 15px; height: 25px; background: orange; border-radius: 50% 50% 20% 20%; position: absolute; top: -20px; left: -2.5px; display: none; box-shadow: 0 0 15px orange; }
+
+        /* Photos Screen */
+        .carousel { display: flex; gap: 10px; overflow-x: auto; width: 90%; max-width: 500px; padding: 20px; }
+        .photo-box { min-width: 150px; height: 200px; background: #333; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+
+        /* Final Message */
+        h1 { font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--primary); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="screen1" class="screen active">
+        <div id="loader-text">3</div>
+    </div>
+
+    <div id="screen2" class="screen">
+        <h2>Ready for the Surprise?</h2>
+        <div style="font-size: 80px; margin-bottom: 20px;">🎉</div>
+        <button class="btn" onclick="nextScreen(3)">Start Surprise</button>
+    </div>
+
+    <div id="screen3" class="screen">
+        <h3>Make a Wish & Light the Candle!</h3>
+        <div class="cake">
+            <div class="candle"><div id="flame" class="flame"></div></div>
+        </div>
+        <button class="btn" id="light-btn" onclick="lightCandle()">Light the Candle 🕯️</button>
+        <button class="btn" id="cake-next" style="display:none; margin-top: 10px;" onclick="nextScreen(4)">Next ➡️</button>
+    </div>
+
+    <div id="screen4" class="screen">
+        <h3>Memories 📸</h3>
+        <div class="carousel">
+            <div class="photo-box">test1</div>
+            <div class="photo-box">test2</div>
+            <div class="photo-box">test3</div>
+        </div>
+        <a href="./im-files/wishing_page1.html"><button class="btn" style="margin-top:20px;">~|Press This Button|~</button>
+    </div></a>
+
+    <script>
+        // Loader Countdown [00:02:06]
+        let count = 3;
+        const loaderInt = setInterval(() => {
+            count--;
+            if(count > 0) {
+                document.getElementById('loader-text').innerText = count;
+            } else {
+                clearInterval(loaderInt);
+                nextScreen(2);
+            }
+        }, 1000);
+
+        function nextScreen(num) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen' + num).classList.add('active');
+        }
+
+        // Cake Interaction [00:01:11]
+        function lightCandle() {
+            document.getElementById('flame').style.display = 'block';
+            document.getElementById('light-btn').style.display = 'none';
+            document.getElementById('cake-next').style.display = 'block';
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+    </script>
+</body>
+</html>
